@@ -6,6 +6,7 @@ Todos.allow({
 
 Meteor.methods({
   addTodo: function(title) {
+    check(title, String);
     var a =  Todos.insert({'title': title});
   }
 });
@@ -22,7 +23,7 @@ if(Meteor.isClient) {
   Template.main.events({
     'click #add-todo': function () {
       var todoText = $('#input-todo').val();
-      if(todoText.trim() != ""){
+      if(todoText.trim() !== "") {
         Meteor.call('addTodo', todoText);
         $('#input-todo').val('');
       }
@@ -34,15 +35,15 @@ if(Meteor.isClient) {
 
     'change .todo-done ': function(e){
       var isDone = $(e.target).is(':checked');
-      Todos.update({_id: this._id}, {$set: {isDone: isDone}})
+      Todos.update({_id: this._id}, {$set: {isDone: isDone}});
     }
   });
 
   Template.main.checkedState = function() {
     return this.isDone? "checked": "";
-  }
+  };
 
   Template.main.todosList = function(){
     return Todos.find();
-  }
+  };
 }
